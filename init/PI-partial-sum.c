@@ -5,7 +5,6 @@
 #define NUM_OF_THREADS 8
 
 const long long n = 1000000000;
-long long i;
 double x, pi;
 double w = 1.0/n;
 
@@ -22,7 +21,7 @@ typedef struct {
 void* piFunction(void* _data){
   double sum = 0.0;
   input_t* inout  = (input_t*) _data;
-  for (i=inout->start; i<inout->end; i++){
+  for (long long i=inout->start; i<inout->end; i++){
     x = w * ((double)i + 0.5);
     sum = sum + f(x);
   }
@@ -33,7 +32,8 @@ void* piFunction(void* _data){
 int main(int argc, char* argv[]) {
   //create threads and structs (same number of)
   pthread_t thread[NUM_OF_THREADS];
-  
+  input_t in[NUM_OF_THREADS]; 
+  long long stepWidth = n / NUM_OF_THREADS;
   
   for (int j = 0;  j < NUM_OF_THREADS; j++){
     in[j].start = j * stepWidth;
