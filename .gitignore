@@ -3,3 +3,4 @@ init/PI-partial-sum
 omp/PI-OMP
 omp/PI-omp-sections
 init/PI-partial-sum
+*out
