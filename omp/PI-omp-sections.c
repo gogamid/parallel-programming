@@ -30,33 +30,22 @@ void* piFunction(void* _data){
 }
 
 int main(int argc, char* argv[]) {
-    //create threads and structs (same number of)
     long long stepWidth = n / NUM_OF_THREADS;
     input_t in[NUM_OF_THREADS];
     for (int j = 0;  j < NUM_OF_THREADS; j++){
 	in[j].start = j * stepWidth;
 	in[j].end = (j+1) * stepWidth;
     }
-#pragma omp parallel 
+
+    #pragma omp parallel num_threads(NUM_OF_THREADS)
+    {
+	#pragma omp single 
 	{
-#pragma omp sections 
-	{
-#pragma omp section
-	    piFunction(&in[0]);
-#pragma omp section
-	    piFunction(&in[1]);
-#pragma omp section
-	    piFunction(&in[2]);
-#pragma omp section
-	    piFunction(&in[3]);
-#pragma omp section
-	    piFunction(&in[4]);
-#pragma omp section
-	    piFunction(&in[5]);
-#pragma omp section
-	    piFunction(&in[6]);
-#pragma omp section
-	    piFunction(&in[7]);
+	    for(int k = 0; k < NUM_OF_THREADS; k++){
+		#pragma omp task
+		piFunction(&in[k]);
+	    }
+
 	}
     }
 
