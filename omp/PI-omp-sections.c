@@ -1,3 +1,5 @@
+// gcc -fopenmp -O2 PI-omp-sections.c -o PI-omp-sections
+// .time ./PI-omp-sections
 #include <stdio.h>
 #include <pthread.h>
 
