@@ -43,10 +43,9 @@ int main(int argc, char* argv[]) {
 
     sum = 0.0;
 
-    #pragma omp parallel for schedule(guided,500000)
+    #pragma omp parallel for reduction(+:sum)
     for (int i = 0; i<n; i++){
 	x = w * ((double)i + 0.5);
-        #pragma omp critical
 	sum = sum + f(x);
     }
     printf("pi = %.15f\n", w*sum);
