@@ -2,7 +2,7 @@
 
 #define f(A) (4.0/(1.0 + A*A))
 
-const long long n = 1000000000;
+const long long n = 100000000;
 //omp is shared memory model, it is okay when we just read shared variable
 //shared variable duptlicated for each thread
 //here sum shared unintendently, be careful with that => race condition -> use synchronisiation
@@ -43,7 +43,7 @@ int main(int argc, char* argv[]) {
 
     sum = 0.0;
 
-    #pragma omp parallel for
+    #pragma omp parallel for schedule(static,5)
     for (int i = 0; i<n; i++){
 	x = w * ((double)i + 0.5);
         #pragma omp critical
