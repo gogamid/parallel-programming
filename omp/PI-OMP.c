@@ -43,7 +43,7 @@ int main(int argc, char* argv[]) {
 
     sum = 0.0;
 
-    #pragma omp parallel for schedule(static,5)
+    #pragma omp parallel for schedule(guided,500000)
     for (int i = 0; i<n; i++){
 	x = w * ((double)i + 0.5);
         #pragma omp critical
