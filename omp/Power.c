@@ -2,6 +2,7 @@
 
 long myPower(long n, long p){
     long res = n;
+    #pragma omp parallel
     for(long i=1; i=p; i++){
 	res*=n;
     }
@@ -9,6 +10,6 @@ long myPower(long n, long p){
 }
 
 int main(int argc, char* argv[]) {
-    printf("%ld\n", myPower(3, 494975));
+    printf("%ld\n", myPower(3, 49));
     return 0;
 }
