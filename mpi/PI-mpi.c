@@ -43,7 +43,7 @@ int main(int argc, char* argv[]) {
       }
       printf("Pi is %lf\n", part/n);
   }else {
-     MPI_Send(&part, 1, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD);
+     MPI_Ssend(&part, 1, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD);
   }
   MPI_Finalize();
 
