@@ -1,3 +1,5 @@
+//mpicc *.c
+//mpirun -n 4 --hostfile hostfile.txt --pernode ./a.out  
 #include <mpi.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -18,13 +20,17 @@ int main(int argc, char* argv[]) {
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &size);
 
+  int number;
   if(rank == 0){
       printf("Hello World from Master %s. I am node %d of %d \n", hn, rank, size);
-
+      MPI_Recv(&number, 1, MPI_INT, 1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+      printf("Process 1 received number %d from process 0\n",
+           number);
   }else {
+     number = -1;
+     MPI_Send(&number, 1, MPI_INT, 0, 0, MPI_COMM_WORLD);
      printf("Hello World from %s. I am node %d of %d \n", hn, rank, size);    
   }
-
 
   // MUST BE CALLED at the end
   MPI_Finalize();
