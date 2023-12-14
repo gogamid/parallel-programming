@@ -20,23 +20,28 @@ int main(int argc, char* argv[]) {
   int size, rank;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &size);
-  char* msg10mb = (char *)malloc(10 * MIB);
+  int MaxSize = 10 * MIB;
+  char* msg10mb = (char *)malloc(MaxSize);
+  int startSize = KIB;
   
 
   if(rank == 0){
+    for(int j = startSize; j <= MaxSize; j=j*2){
       double start = MPI_Wtime();
       for(int i = 0; i < REPS; i ++){
-	  MPI_Ssend(msg10mb, (10 * MIB), MPI_CHAR, 1, 17, MPI_COMM_WORLD);
+	  MPI_Ssend(msg10mb, j , MPI_CHAR, 1, 17, MPI_COMM_WORLD);
       }
       double end = MPI_Wtime();
       double latency = end - start;
-      printf("Latency is %lf nsec \n", ((end - start)) * 1E9);
-      printf("Bandwidth is %lf MB/sec \n", (((10 * MIB * REPS) / latency)) /(1024 * 1024));
-
+      //printf("Latency is %lf nsec \n", ((end - start)) * 1E9);
+      printf("Bandwidth for %d is %lf MB/sec \n",j, (((j * REPS) / latency)) /(1024 * 1024));
+    }
   } else if (rank == 1){
+    for(int j = startSize; j <= MaxSize; j=j*2){
       for(int i = 0; i < REPS; i ++){
-	  MPI_Recv(msg10mb, (10 * MIB), MPI_CHAR, 0, 17, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+	  MPI_Recv(msg10mb, j, MPI_CHAR, 0, 17, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
       }
+    }
   } else {}
   free(msg10mb);
   MPI_Finalize();
