@@ -6,10 +6,9 @@ fn f(x: f64) -> f64 {
 }
 
 fn main() {
-    let mut sum = 0.0;
-    for i in 0..N {
-        let x = W * (i as f64 + 0.5);
-        sum = sum + f(x);
-    }
+    let sum: f64 = (0..N)
+        .into_iter()
+        .map(|i| f(W * ((i as f64) + 0.5)))
+        .sum::<f64>();
     println!("pi = {}", W * sum);
 }
